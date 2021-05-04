@@ -7,12 +7,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbody;
     float jumpForce = 13;
     float gravityModifier = 2f;
-    bool isOnGround = true; 
+    bool isOnGround = true;
+    public bool isGameOver; 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        Physics.gravity *= gravityModifier; 
+        Physics.gravity *= gravityModifier;
+        isGameOver = false;
     }
 
     // Update is called once per frame
@@ -25,8 +27,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision other)
     {
-        isOnGround = true;
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isOnGround = true;
+        }
+        else if (other.gameObject.CompareTag("Obstacle"))
+        {
+            isGameOver = true; 
+        }
     }
 }
